@@ -74,6 +74,7 @@ The `config` parameter allows you to configure the Kubernetes MCP server. The fo
 | `confluence.url`               | URL of the Confluence instance.                                                | `""`        |
 | `confluence.username`          | Confluence username.                                                           | `""`        |
 | `confluence.token`             | Confluence API token. **It is strongly recommended to set this via `--set-string` in a CI/CD pipeline rather than in the values file.** | `""`        |
+| `prometheus.url`               | URL of the Prometheus instance.                                                | `""`        |
 | `oauth.require`                | If true, requires OAuth authorization.                                         | `false`     |
 | `oauth.audience`               | OAuth audience for token claims validation.                                    | `""`        |
 | `oauth.validateToken`          | If true, validates the token against the Kubernetes API Server.                | `false`     |
