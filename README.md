@@ -152,6 +152,43 @@ In this demo, I'll show you how to set up Kubernetes MCP server in VS code just 
  <img src="docs/images/kubernetes-mcp-server-github-copilot.jpg" alt="Supercharge GitHub Copilot with Kubernetes MCP Server in VS Code - One-Click Setup!" width="240"  />
 </a>
 
+## Usage Examples <a id="usage-examples"></a>
+
+Here are a few examples of how you can combine the tools to perform complex tasks.
+
+### Create a Confluence Report from Search Results
+
+You can chain commands to first search for resources in your Kubernetes cluster and then create a report in Confluence with the results.
+
+For example, you could ask your AI assistant:
+
+> "Find all deployments in the 'default' namespace and create a report in the 'K8S' Confluence space."
+
+The assistant would perform the following steps:
+
+1.  **Search for deployments:**
+    ```json
+    {
+      "tool_name": "resources_list",
+      "parameters": {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "namespace": "default"
+      }
+    }
+    ```
+2.  **Format the results and create a Confluence page:**
+    ```json
+    {
+      "tool_name": "confluence.createPage",
+      "parameters": {
+        "space_key": "K8S",
+        "title": "Deployment Report for 'default' namespace",
+        "content": "<table><tr><th>Name</th><th>Ready</th><th>Up-to-date</th><th>Available</th></tr><tr><td>my-deployment</td><td>1/1</td><td>1</td><td>1</td></tr></table>"
+      }
+    }
+    ```
+
 ## ⚙️ Configuration <a id="configuration"></a>
 
 The Kubernetes MCP server can be configured using command line (CLI) arguments.
@@ -184,6 +221,21 @@ uvx kubernetes-mcp-server@latest --help
 | `--read-only`           | If set, the MCP server will run in read-only mode, meaning it will not allow any write operations (create, update, delete) on the Kubernetes cluster. This is useful for debugging or inspecting the cluster without making changes.                                                          |
 | `--disable-destructive` | If set, the MCP server will disable all destructive operations (delete, update, etc.) on the Kubernetes cluster. This is useful for debugging or inspecting the cluster without accidentally making changes. This option has no effect when `--read-only` is used.                            |
 | `--toolsets`            | Comma-separated list of toolsets to enable. Check the [🛠️ Tools and Functionalities](#tools-and-functionalities) section for more information.                                                                                                                                               |
+| `--config`              | Path to a TOML configuration file.                                                                                                                                                                                                                                                            |
+
+### Configuration File
+
+In addition to command-line arguments, the server can be configured using a TOML file. Use the `--config` flag to specify the path to this file.
+
+Here is an example of a configuration file with the Confluence toolset enabled:
+
+```toml
+# Confluence API settings
+[confluence]
+url = "https://your-domain.atlassian.net/wiki/rest/api"
+username = "your-email@example.com"
+token = "your-confluence-api-token"
+```
 
 ## 🛠️ Tools and Functionalities <a id="tools-and-functionalities"></a>
 
@@ -197,11 +249,12 @@ The following sets of tools are available (all on by default):
 
 <!-- AVAILABLE-TOOLSETS-START -->
 
-| Toolset | Description                                                                         |
-|---------|-------------------------------------------------------------------------------------|
-| config  | View and manage the current local Kubernetes configuration (kubeconfig)             |
-| core    | Most common tools for Kubernetes management (Pods, Generic Resources, Events, etc.) |
-| helm    | Tools for managing Helm charts and releases                                         |
+| Toolset    | Description                                                                         |
+|------------|-------------------------------------------------------------------------------------|
+| config     | View and manage the current local Kubernetes configuration (kubeconfig)             |
+| confluence | Tools for interacting with Confluence                                               |
+| core       | Most common tools for Kubernetes management (Pods, Generic Resources, Events, etc.) |
+| helm       | Tools for managing Helm charts and releases                                         |
 
 <!-- AVAILABLE-TOOLSETS-END -->
 
@@ -215,6 +268,18 @@ The following sets of tools are available (all on by default):
 
 - **configuration_view** - Get the current Kubernetes configuration content as a kubeconfig YAML
   - `minified` (`boolean`) - Return a minified version of the configuration. If set to true, keeps only the current-context and the relevant pieces of the configuration for that context. If set to false, all contexts, clusters, auth-infos, and users are returned in the configuration. (Optional, default true)
+
+</details>
+
+<details>
+
+<summary>confluence</summary>
+
+- **confluence.createPage** - Create a new page in Confluence.
+  - `content` (`string`) **(required)** - The content of the new page in Confluence Storage Format (XHTML).
+  - `parent_id` (`string`) - Optional ID of a parent page.
+  - `space_key` (`string`) **(required)** - The key of the space to create the page in.
+  - `title` (`string`) **(required)** - The title of the new page.
 
 </details>
 
