@@ -36,22 +36,23 @@ type Configuration struct {
 func (c *Configuration) Toolsets() []api.Toolset {
 	if c.toolsets == nil {
 		for _, toolsetName := range c.StaticConfig.Toolsets {
-			var toolset api.Toolset
-			var err error
-			if toolsetName == "confluence" {
+			var (
+				toolset api.Toolset
+				err     error
+			)
+
+			switch toolsetName {
+			case "confluence":
 				toolset, err = confluence.NewToolset(c.Confluence)
-				if err != nil {
-					klog.Warningf("failed to initialize confluence toolset: %v", err)
-					continue
-				}
-			} else if toolsetName == "prometheus" {
+			case "prometheus":
 				toolset, err = prometheus.NewToolset(c.Prometheus)
-				if err != nil {
-					klog.Warningf("failed to initialize prometheus toolset: %v", err)
-					continue
-				}
-			} else {
+			default:
 				toolset = toolsets.ToolsetFromString(toolsetName)
+			}
+
+			if err != nil {
+				klog.Warningf("failed to initialize %s toolset: %v", toolsetName, err)
+				continue
 			}
 
 			if toolset != nil {
