@@ -94,5 +94,21 @@ func ReadToml(configData []byte) (*StaticConfig, error) {
 	if err := toml.Unmarshal(configData, config); err != nil {
 		return nil, err
 	}
+	config.loadFromEnv()
 	return config, nil
+}
+
+func (c *StaticConfig) loadFromEnv() {
+	if c.Confluence == nil {
+		c.Confluence = &ConfluenceConfig{}
+	}
+	if url := os.Getenv("MCP_CONFLUENCE_URL"); url != "" {
+		c.Confluence.URL = url
+	}
+	if username := os.Getenv("MCP_CONFLUENCE_USERNAME"); username != "" {
+		c.Confluence.Username = username
+	}
+	if token := os.Getenv("MCP_CONFLUENCE_TOKEN"); token != "" {
+		c.Confluence.Token = token
+	}
 }
