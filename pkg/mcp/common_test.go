@@ -47,8 +47,8 @@ import (
 	"github.com/containers/kubernetes-mcp-server/pkg/config"
 	"github.com/containers/kubernetes-mcp-server/pkg/output"
 	"github.com/containers/kubernetes-mcp-server/pkg/toolsets"
-	"github.com/containers/kubernetes-mcp-server/pkg/toolsets/confluence"
 	_ "github.com/containers/kubernetes-mcp-server/pkg/toolsets/config"
+	"github.com/containers/kubernetes-mcp-server/pkg/toolsets/confluence"
 	_ "github.com/containers/kubernetes-mcp-server/pkg/toolsets/core"
 	_ "github.com/containers/kubernetes-mcp-server/pkg/toolsets/helm"
 )

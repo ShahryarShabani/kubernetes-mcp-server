@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	"github.com/containers/kubernetes-mcp-server/pkg/toolsets"
-	"github.com/containers/kubernetes-mcp-server/pkg/toolsets/confluence"
 	_ "github.com/containers/kubernetes-mcp-server/pkg/toolsets/config"
+	"github.com/containers/kubernetes-mcp-server/pkg/toolsets/confluence"
 	_ "github.com/containers/kubernetes-mcp-server/pkg/toolsets/core"
 	_ "github.com/containers/kubernetes-mcp-server/pkg/toolsets/helm"
 	"github.com/containers/kubernetes-mcp-server/pkg/toolsets/prometheus"
