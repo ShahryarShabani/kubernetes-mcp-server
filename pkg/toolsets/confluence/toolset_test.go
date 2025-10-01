@@ -37,7 +37,8 @@ func TestConfluenceToolset_CreatePage(t *testing.T) {
 				WebUI: "/display/TEST/My+Test+Page",
 			},
 		}
-		json.NewEncoder(w).Encode(response)
+		err = json.NewEncoder(w).Encode(response)
+		require.NoError(t, err)
 	}))
 	defer mockServer.Close()
 

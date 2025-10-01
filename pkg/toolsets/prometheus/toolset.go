@@ -77,12 +77,9 @@ func runQueryHandler(p8sAPI v1.API) api.ToolHandlerFunc {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
 
-		result, warnings, err := p8sAPI.Query(ctx, query, time.Now())
+		result, _, err := p8sAPI.Query(ctx, query, time.Now())
 		if err != nil {
 			return api.NewToolCallResult("", fmt.Errorf("failed to run query: %w", err)), nil
-		}
-		if len(warnings) > 0 {
-			// Not treating warnings as errors for now
 		}
 
 		return api.NewToolCallResult(result.String(), nil), nil
