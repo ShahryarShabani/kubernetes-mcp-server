@@ -159,6 +159,34 @@ func (s *ConfigSuite) TestReadConfigValidPreservesDefaultsForMissingFields() {
 	})
 }
 
+func (s *ConfigSuite) TestReadConfigWithEnv() {
+	s.T().Setenv("MCP_CONFLUENCE_URL", "https://env-confluence.example.com")
+	s.T().Setenv("MCP_CONFLUENCE_USERNAME", "env-user")
+	s.T().Setenv("MCP_CONFLUENCE_TOKEN", "env-token")
+
+	configToml := `
+	[confluence]
+	url = "https://toml-confluence.example.com"
+	username = "toml-user"
+	token = "toml-token"
+	`
+
+	config, err := ReadToml([]byte(configToml))
+	s.Require().NoError(err)
+	s.Require().NotNil(config)
+	s.Require().NotNil(config.Confluence)
+
+	s.Run("URL is from env", func() {
+		s.Equal("https://env-confluence.example.com", config.Confluence.URL)
+	})
+	s.Run("Username is from env", func() {
+		s.Equal("env-user", config.Confluence.Username)
+	})
+	s.Run("Token is from env", func() {
+		s.Equal("env-token", config.Confluence.Token)
+	})
+}
+
 func (s *ConfigSuite) writeConfig(content string) string {
 	s.T().Helper()
 	tempDir := s.T().TempDir()
