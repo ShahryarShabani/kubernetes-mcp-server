@@ -285,9 +285,29 @@ func TestHealthCheck(t *testing.T) {
 			if err != nil {
 				t.Fatalf("Failed to get health check endpoint: %v", err)
 			}
-			t.Cleanup(func() { _ = resp.Body.Close })
+			t.Cleanup(func() { _ = resp.Body.Close() })
 			if resp.StatusCode != http.StatusOK {
 				t.Errorf("Expected HTTP 200 OK, got %d", resp.StatusCode)
+			}
+		})
+		t.Run("Exposes health check endpoint at /", func(t *testing.T) {
+			resp, err := http.Get(fmt.Sprintf("http://%s/", ctx.HttpAddress))
+			if err != nil {
+				t.Fatalf("Failed to get health check endpoint: %v", err)
+			}
+			t.Cleanup(func() { _ = resp.Body.Close() })
+			if resp.StatusCode != http.StatusOK {
+				t.Errorf("Expected HTTP 200 OK, got %d", resp.StatusCode)
+			}
+		})
+		t.Run("Returns 404 for unknown paths", func(t *testing.T) {
+			resp, err := http.Get(fmt.Sprintf("http://%s/unknown", ctx.HttpAddress))
+			if err != nil {
+				t.Fatalf("Failed to get unknown endpoint: %v", err)
+			}
+			t.Cleanup(func() { _ = resp.Body.Close() })
+			if resp.StatusCode != http.StatusNotFound {
+				t.Errorf("Expected HTTP 404 Not Found, got %d", resp.StatusCode)
 			}
 		})
 	})

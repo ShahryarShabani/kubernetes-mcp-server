@@ -41,6 +41,17 @@ func Serve(ctx context.Context, mcpServer *mcp.Server, staticConfig *config.Stat
 	mux.Handle(sseEndpoint, sseServer)
 	mux.Handle(sseMessageEndpoint, sseServer)
 	mux.Handle(mcpEndpoint, streamableHttpServer)
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/" {
+			http.NotFound(w, r)
+			return
+		}
+		// The health check now lives at /healthz, and should be used for any
+		// automated liveness/readiness probes.
+		// However, some health checkers may only hit the root, so we'll return
+		// an OK status here as well, to avoid unnecessary restarts.
+		w.WriteHeader(http.StatusOK)
+	})
 	mux.HandleFunc(healthEndpoint, func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	})
