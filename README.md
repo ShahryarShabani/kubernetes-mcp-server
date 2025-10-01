@@ -224,12 +224,11 @@ The following sets of tools are available (all on by default):
 
 <!-- AVAILABLE-TOOLSETS-START -->
 
-| Toolset    | Description                                                                         |
-|------------|-------------------------------------------------------------------------------------|
-| config     | View and manage the current local Kubernetes configuration (kubeconfig)             |
-| confluence | Tools for interacting with Confluence                                               |
-| core       | Most common tools for Kubernetes management (Pods, Generic Resources, Events, etc.) |
-| helm       | Tools for managing Helm charts and releases                                         |
+| Toolset | Description                                                                         |
+|---------|-------------------------------------------------------------------------------------|
+| config  | View and manage the current local Kubernetes configuration (kubeconfig)             |
+| core    | Most common tools for Kubernetes management (Pods, Generic Resources, Events, etc.) |
+| helm    | Tools for managing Helm charts and releases                                         |
 
 <!-- AVAILABLE-TOOLSETS-END -->
 
@@ -243,18 +242,6 @@ The following sets of tools are available (all on by default):
 
 - **configuration_view** - Get the current Kubernetes configuration content as a kubeconfig YAML
   - `minified` (`boolean`) - Return a minified version of the configuration. If set to true, keeps only the current-context and the relevant pieces of the configuration for that context. If set to false, all contexts, clusters, auth-infos, and users are returned in the configuration. (Optional, default true)
-
-</details>
-
-<details>
-
-<summary>confluence</summary>
-
-- **confluence.createPage** - Create a new page in Confluence.
-  - `space_key` (`string`) **(required)** - The key of the space to create the page in.
-  - `title` (`string`) **(required)** - The title of the new page.
-  - `content` (`string`) **(required)** - The content of the new page in Confluence Storage Format (XHTML).
-  - `parent_id` (`string`) - Optional ID of a parent page.
 
 </details>
 
@@ -333,6 +320,13 @@ The following sets of tools are available (all on by default):
   - `kind` (`string`) **(required)** - kind of the resource (examples of valid kind are: Pod, Service, Deployment, Ingress)
   - `name` (`string`) **(required)** - Name of the resource
   - `namespace` (`string`) - Optional Namespace to delete the namespaced resource from (ignored in case of cluster scoped resources). If not provided, will delete resource from configured namespace
+
+- **search.Resources** - Search for a string in all resources.
+  - `api_version` (`string`) - Optional API version of the resource to search in.
+  - `as_table` (`boolean`) - Return the results as a table.
+  - `kind` (`string`) - Optional kind of the resource to search in.
+  - `namespace_label_selector` (`string`) - Optional label selector to filter namespaces.
+  - `query` (`string`) **(required)** - The string to search for in the resources.
 
 </details>
 
