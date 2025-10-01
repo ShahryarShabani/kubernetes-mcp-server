@@ -103,7 +103,7 @@ config:
   confluence:
     # url: https://your-confluence-instance
     # username: user
-    # token: "" # It is recommended to set this via --set-string in a CI/CD pipeline
+    # token: "" # This value is used to create a secret for the Confluence token. It is recommended to set this via --set-string in a CI/CD pipeline
   prometheus:
     # url: http://your-prometheus-instance:9090
   oauth:

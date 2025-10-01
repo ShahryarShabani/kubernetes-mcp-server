@@ -20,7 +20,6 @@ data:
     [confluence]
       url = "{{ .Values.config.confluence.url }}"
       username = "{{ .Values.config.confluence.username }}"
-      token = "{{ .Values.config.confluence.token }}"
     {{- end }}
     {{- if .Values.config.prometheus.url }}
     [prometheus]

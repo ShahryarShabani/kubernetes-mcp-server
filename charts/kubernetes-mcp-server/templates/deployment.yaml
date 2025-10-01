@@ -38,6 +38,14 @@ spec:
           args:
             - --config=/etc/kubernetes-mcp-server/config.toml
             - --port={{ .Values.service.port }}
+          {{- if .Values.config.confluence.token }}
+          env:
+            - name: MCP_CONFLUENCE_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "kubernetes-mcp-server.fullname" . }}-confluence
+                  key: token
+          {{- end }}
           volumeMounts:
             - name: config
               mountPath: /etc/kubernetes-mcp-server
