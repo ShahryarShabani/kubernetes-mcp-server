@@ -145,14 +145,19 @@ func (m *Manager) ToRESTMapper() (meta.RESTMapper, error) {
 }
 
 func (m *Manager) Derived(ctx context.Context) (*Kubernetes, error) {
-	authorization, ok := ctx.Value(OAuthAuthorizationHeader).(string)
+	headerKey := OAuthAuthorizationHeader
+	authorization, ok := ctx.Value(headerKey).(string)
+	if !ok {
+		headerKey = CustomAuthorizationHeader
+		authorization, ok = ctx.Value(headerKey).(string)
+	}
 	if !ok || !strings.HasPrefix(authorization, "Bearer ") {
 		if m.staticConfig.RequireOAuth {
 			return nil, errors.New("oauth token required")
 		}
 		return &Kubernetes{manager: m}, nil
 	}
-	klog.V(5).Infof("%s header found (Bearer), using provided bearer token", OAuthAuthorizationHeader)
+	klog.V(5).Infof("%s header found (Bearer), using provided bearer token", headerKey)
 	derivedCfg := &rest.Config{
 		Host:    m.cfg.Host,
 		APIPath: m.cfg.APIPath,
