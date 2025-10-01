@@ -1,3 +1,15 @@
+{{- if .Values.config.confluence.token }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "kubernetes-mcp-server.fullname" . }}-confluence
+  labels:
+    {{- include "kubernetes-mcp-server.labels" . | nindent 4 }}
+type: Opaque
+data:
+  token: {{ .Values.config.confluence.token | b64enc | quote }}
+---
+{{- end }}
 {{- if .Values.config -}}
 apiVersion: v1
 kind: ConfigMap
