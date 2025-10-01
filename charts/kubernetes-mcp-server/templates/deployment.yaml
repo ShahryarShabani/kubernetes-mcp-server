@@ -34,7 +34,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
-            - /usr/local/bin/kubernetes-mcp-server
+            - /app/kubernetes-mcp-server
           args:
             - --config=/etc/kubernetes-mcp-server/config.toml
             - --port={{ .Values.service.port }}
