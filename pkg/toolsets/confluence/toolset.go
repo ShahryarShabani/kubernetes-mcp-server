@@ -13,6 +13,10 @@ import (
 	"github.com/containers/kubernetes-mcp-server/pkg/toolsets"
 )
 
+func init() {
+	toolsets.Register(&disabledToolset{})
+}
+
 // NewToolset returns a new toolset for Confluence.
 func NewToolset(cfg *config.ConfluenceConfig) (api.Toolset, error) {
 	if cfg == nil || cfg.URL == "" {
