@@ -96,10 +96,10 @@ config:
   # - core
   # - config
   # - helm
-  # denied_resources:
-  # - group: ""
-  #   version: "v1"
-  #   kind: "Secret"
+  denied_resources:
+  - group: ""
+    version: "v1"
+    kind: "Secret"
   confluence:
     # url: https://your-confluence-instance
     # username: user
